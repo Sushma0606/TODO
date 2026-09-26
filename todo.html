@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO LIST</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+        .TODO{
+           width: 100%;
+           min-height: 100vh;
+           background: linear-gradient(135deg, teal, lightgreen);
+           padding: 20px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+
+        }
+        .todo{
+            width: 100%;
+            max-width: 450px;
+            background: linear-gradient(rgb(82, 156, 98));
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: rgb(79, 120, 134);
+        }
+        .TODO h1{
+            color: rgb(13, 36, 98);
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: medium;
+            text-align: center;
+        }
+        .TODO h1 img{
+            width:auto;
+            margin-left: 10px;
+            height: 30px;
+            /* display: flex;
+            gap: 10px;
+            max-width: 100%; */
+        }
+        .row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgb(156, 239, 237);
+            border-radius: 30px;
+            overflow: hidden;
+            width: 100%;
+        }
+        input{
+            flex: 1;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 10px;
+            color: rgb(162, 130, 98);
+        }
+        button{
+            border: none;
+            outline: none;
+            padding: 16px 50px;
+            background:rgb(108, 74, 114) ;
+            color: rgb(243, 5, 5);
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 0 30px 30px 0;
+        }
+        ul li{
+            list-style: none;
+            font-size: 17px;
+            padding: 12px 8px 12px 45px;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: left;
+
+        }
+        ul li::before{
+            content: '';
+            position: absolute;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            background-image: url("./unchecked1.jpg");
+            background-size: cover;
+            background-position: center;
+            top: 50%;
+            left: 8px;
+        }
+        ul li.checked{
+            color: rgb(171, 208, 180);
+            text-decoration: line-through;
+        }
+        ul li.checked::before{
+            background-image: url("./checked1.jpg");
+        }
+        ul li span{
+            position: absolute;
+            right: 0;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            color: rgb(3, 222, 246);
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        ul li span:hover{
+            background: rgb(143, 95, 136);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="TODO">
+
+        <div class="todo">
+
+        <h1>TO-DO LIST<img src="./Todo.jpg"></h1>
+        <div class="row">
+            <input type="text" id="input-box" placeholder="ADD YOUR TASK....">
+            <button onClick="addTask()">ADD</button>
+        </div><br><br>
+        <ul id="list-container">
+            <!-- <li class="checked">Task 1</li>
+            <li>Task 2</li>
+            <li>Task 3</li>
+        </ul> -->
+        </div>
+    </div>
+</body>
+<script>
+    const inputBox=document.getElementById("input-box");
+    const listContainer=document.getElementById("list-container");
+
+     function addTask(){
+        if(inputBox.value ===''){
+            alert("YOU MUST ADD SOME TASK...");
+        }
+        else{
+            let li=document.createElement("li");
+            li.innerHTML=inputBox.value;
+            listContainer.appendChild(li);
+            let span=document.createElement("span");
+            span.innerHTML="X";
+            li.appendChild(span);
+        }
+        inputBox.value="";
+        saveData();
+     }
+
+     listContainer.addEventListener("click",function(e){
+        if(e.target.tagName==="LI"){
+            e.target.classList.toggle("checked");
+            saveData();
+        }
+        else if(e.target.tagName==="SPAN"){
+            e.target.parentElement.remove();
+            saveData();
+        }
+     }, false);
+     function saveData(){
+        localStorage.setItem("data",listContainer.innerHTML);
+     }
+     function showTask(){
+        listContainer.innerHTML=localStorage.getItem("data");
+     }
+     showTask();
+</script>
+</html>
